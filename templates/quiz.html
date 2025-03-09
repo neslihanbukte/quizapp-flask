@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color:rgb(252, 251, 251);
+            background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+            text-align: center;
+            position: relative;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: whitesmoke;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        h1 {
+            color: #333;
+        }
+        .scoreboard {
+            position: fixed;
+            top: 10px;
+            right: 2px;
+            background: linear-gradient(135deg, #c3d4e7, #0056b3);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            gap: 15px;
+            font-weight: bold;
+        }
+        .scoreboard p {
+            margin: 0;
+            padding: 5px 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+        }
+        .question {
+            text-align: left;
+            font-weight: bold;
+            font-family: 'Poppins', sans-serif;
+            background: white;
+            padding: 10px;
+            border-radius: 18px;
+            margin-bottom: 15px;
+        }
+        .options {
+            text-align: left;
+            margin-left: 10px;
+        }
+        label {
+            display: block;
+            background: #ddd;
+            padding: 8px;
+            border-radius: 30px;
+            margin: 20px 0;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        label:hover {
+            background: #ccc;
+        }
+        input[type="radio"] {
+            margin-right: 15px;
+            box-shadow: 1px 1px 15px rgba(214, 230, 217, 0.7);
+        }
+        button {
+            background: linear-gradient(135deg, #759ac2, #0056b3);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background 0.3s, transform 0.2s;
+        }
+        button:hover {
+            background: linear-gradient(135deg, #0056b3, #004099);
+            transform: scale(1.05);
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="scoreboard">
+        <p>🏆 Genel En Yüksek Skor: {{ highest_score }}</p>
+        <p>⭐ Senin En Yüksek Skorun: {{ user.highest_score }}</p>
+    </div>
+    
+    <div class="container">
+        <h1>🎯 Quiz</h1>
+        <form method="POST" action="/submit">
+            {% for i, q in questions %}
+                <div class="question">
+                    <p><strong>{{ q.question }}</strong></p>
+                    <div class="options">
+                        {% for option in q.options %}
+                            <label>
+                                <input type="radio" name="question_{{ i }}" value="{{ option }}"> {{ option }}
+                            </label>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+            <button type="submit">🚀 Gönder</button>
+        </form>
+        <footer>{{ footer_text }}</footer>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Sonucu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+            text-align: center;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            color: #007BFF;
+            font-weight: 600;
+        }
+        .score-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-size: 22px;
+            font-weight: bold;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        button {
+            background: #007BFF;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #0056b3;
+            transform: scale(1.05);
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sonuçlar</h1>
+        <p class="score-box">Senin Skorun: {{ user.last_score }}</p>
+        <p class="score-box">Kendi En Yüksek Skorun: {{ user.highest_score }}</p>
+        <p class="score-box">Genel En Yüksek Skor: {{ highest_score }}</p>
+        <div class="buttons">
+            <a href="/quiz"><button>Yeniden Dene</button></a>
+        </div>
+        <footer>{{ footer_text }}</footer>
+    </div>
+</body>
+</html>
