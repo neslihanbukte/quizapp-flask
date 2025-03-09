@@ -7,6 +7,7 @@ db = SQLAlchemy(app)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
     last_score = db.Column(db.Integer, default=0)
     highest_score = db.Column(db.Integer, default=0)
 
@@ -34,23 +35,29 @@ def quiz():
 
 @app.route("/submit", methods=["POST"])
 def submit():
-    user = User.query.first()
+    username = request.form.get("username")
+    if not username:
+        return redirect(url_for("quiz"))
+
+    user = User.query.filter_by(name=username).first()
+    
     if not user:
-        user = User()
+        user = User(name=username, last_score=0, highest_score=0)
         db.session.add(user)
-    
-    score = 0
-    for i, q in enumerate(questions):
-        selected_answer = request.form.get(f"question_{i}")
-        if selected_answer == q["answer"]:
-            score += 1
-    
+
+    score = sum(1 for i, q in enumerate(questions) if request.form.get(f"question_{i}") == q["answer"])
+
     user.last_score = score
     if score > user.highest_score:
         user.highest_score = score
+    
     db.session.commit()
     
-    return render_template("score.html", user=user, highest_score=get_highest_score(), footer_text="Neslihan Bükte tarafından geliştirildi. Tüm hakları saklıdır.")
+    highest_scorer = User.query.order_by(User.highest_score.desc()).first()
+    highest_scorer_name = highest_scorer.name if highest_scorer else "Bilinmiyor"
+
+    return render_template("score.html", user=user, highest_score=get_highest_score(), highest_scorer=highest_scorer_name, footer_text="Neslihan Bükte tarafından geliştirildi. Tüm hakları saklıdır.")
+
 
 if __name__ == "__main__":
     with app.app_context():
