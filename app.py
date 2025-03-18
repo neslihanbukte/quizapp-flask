@@ -12,11 +12,11 @@ class User(db.Model):
     highest_score = db.Column(db.Integer, default=0)
 
 questions = [
-    {"question": " Question 1: Bir Gün Kaç Saniyedir?", "options": ["86000", "88600", "86400", "84800"], "answer": "86400"},
-    {"question": "Question 2: 'Sinekli Bakkal' Romanının Yazarı Kimdir?", "options": ["Reşat Nuri Güntekin", "Halide Edip Adıvar", "Ziya Gökalp", "Ömer Seyfettin"], "answer": "Halide Edip Adıvar"},
-    {"question": "Question 3: Altının kimyasal sembolü nedir?", "options": ["Au", "He", "Li", "Be"], "answer": "Au"},
-    {"question": "Question 4: 'Yıldızlı Gece' adlı sanat başyapıtını hangi sanatçı çizmiştir?", "options": ["Vincent van Gogh", "Claude Monet", "Salvador Dali", "Frida Kahlo"], "answer": "Vincent van Gogh"},
-    {"question": "Questin 5: 2003 yılında Eurovision Şarkı Yarışması'nda Türkiye'yi temsil eden ve birinci olan sanatçımız kimdir?", "options": ["Grup Athena", "Sertap Erener", "Şebnem Paker", "Ajda Pekkan"], "answer": "Sertap Erener"}
+    {"question": "Question 1: discord.py kütüphanesinde bir botun mesajlara yanıt vermesi için hangi olay (event) kullanılır?", "options": ["on_message()", "on_reaction_add()", "on_ready()", "on_member_join()"], "answer": "on_message()"},
+    {"question": "Question 2: Flask uygulamasında, kullanıcının gönderdiği form verilerini almak için hangi metot kullanılır?", "options": ["request.get_data()", "request.input_data()", "request.form.get()", "request.retrieve_form()"], "answer": "request.form.get()"},
+    {"question": "Question 3: TensorFlow ve PyTorch gibi kütüphaneler en çok hangi amaç için kullanılır?", "options": ["Web Geliştirme", "Makine Öğrenimi ve Derin Öğrenme", "Veri Tabanı Yönetimi", "Kriptografi"], "answer": "Makine Öğrenimi ve Derin Öğrenme"},
+    {"question": "Question 4: OpenCV kütüphanesinde bir görüntüyü gri tonlamalı hale getirmek için hangi fonksiyon kullanılır?", "options": ["cv2.imread()", "cv2.cvtColor()", "cv2.threshold()", "cv2.resize()"], "answer": "cv2.cvtColor()"},
+    {"question": "Question 5: NLTK kütüphanesinde kelime köklerini bulmak için kullanılan algoritma hangisidir?", "options": ["Lemmatization", "Tokenization", "Stemming", "POS tagging"], "answer": "Stemming"}
 ]
 
 def get_highest_score():
@@ -28,10 +28,17 @@ def get_highest_score():
 def quiz():
     user = User.query.first()
     if not user:
-        user = User()
+        user = User(name="Anonim", last_score=0, highest_score=0)
         db.session.add(user)
         db.session.commit()
-    return render_template("quiz.html", questions=enumerate(questions), user=user, highest_score=get_highest_score(), footer_text="Neslihan Bükte tarafından geliştirildi. Tüm hakları saklıdır.")
+    
+    return render_template(
+        "quiz.html", 
+        questions=enumerate(questions), 
+        user=user, 
+        highest_score=get_highest_score(), 
+        footer_text="Neslihan Bükte tarafından geliştirildi. Tüm hakları saklıdır."
+    )
 
 @app.route("/submit", methods=["POST"])
 def submit():
@@ -56,13 +63,15 @@ def submit():
     highest_scorer = User.query.order_by(User.highest_score.desc()).first()
     highest_scorer_name = highest_scorer.name if highest_scorer else "Bilinmiyor"
 
-    return render_template("score.html", user=user, highest_score=get_highest_score(), highest_scorer=highest_scorer_name, footer_text="Neslihan Bükte tarafından geliştirildi. Tüm hakları saklıdır.")
-
+    return render_template(
+        "score.html", 
+        user=user, 
+        highest_score=get_highest_score(), 
+        highest_scorer=highest_scorer_name, 
+        footer_text="Neslihan Bükte tarafından geliştirildi. Tüm hakları saklıdır."
+    )
 
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
     app.run(debug=True)
-
-
-
